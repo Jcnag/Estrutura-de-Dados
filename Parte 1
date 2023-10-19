@@ -1,0 +1,72 @@
+#criacao da classe Objeto com os atributos chave e nome
+class Objeto:
+    def __init__(self, chave, nome):
+        self.chave = chave
+        self.nome = nome
+
+#criacao da classe HashTable com atributo size; uma lista contendo 10 listas vazias
+class HashTable:
+    def __init__(self, size):
+        self.n = size
+        self.table = [[] for _ in range(10)]
+
+    #primeiro nivel de enderecamento
+    def first_hash(self, key):
+        return key % 10
+
+    #segundo nivel de enderecamento
+    def second_hash(self, key):
+        return key % (self.n // 10)
+
+    #metodo de irnsercao do objeto na tabela
+    def insert(self, key, name):
+        obj = Objeto(key, name)
+        first_index = self.first_hash(key) #primeira funcao hash
+        second_index = self.second_hash(key) #segunda funcao hash
+        self.table[first_index].append((second_index, obj)) #add o objeto na tabela
+
+    #metodo para procurar o objeto na tabela
+    def find(self, key):
+        first_index = self.first_hash(key) #primeira funcao hash
+        second_index = self.second_hash(key) #segunda funcao hash
+        for idx, obj in self.table[first_index]: #varredura
+            if idx == second_index and obj.chave == key:
+                return obj
+        return None
+
+    #metodo para impressao da tabela hash
+    def print_table(self):
+        for i in range(10):
+            print(f"First Level {i}: ")
+            for j in range(self.n // 10):
+                print(f"Second Level {j}: ", end="")
+                for idx, obj in self.table[i]:
+                    if idx == j:
+                        print(f"(Chave: {obj.chave}, Nome: {obj.nome})", end=" ")
+                print()
+            print()
+
+
+#tamanho desejado da tabela
+table_size = 100
+
+#criacao da tabela hash
+hash_table = HashTable(table_size)
+
+#exemplo de insercao de elementos
+hash_table.insert(15, "Objeto_1")
+hash_table.insert(25, "Objeto_2")
+hash_table.insert(35, "Objeto_3")
+hash_table.insert(12, "Objeto_4")
+hash_table.insert(22, "Objeto_5")
+
+#recuperar objetos por chave
+key_to_find = 35
+found_object = hash_table.find(key_to_find)
+if found_object:
+    print(f"Objeto encontrado! - Chave: {found_object.chave}, Nome: {found_object.nome}")
+else:
+    print(f"Objeto com chave {key_to_find} não encontrado!")
+
+#imprimir tabela hash
+hash_table.print_table()
