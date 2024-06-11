@@ -1,2 +1,2 @@
-# Estrutura-de-Dados---Tabela-Hash
-Atividade de implementação de Tabela Hash
+# Estrutura-de-Dados
+Repositório de atividades da disciplina.
